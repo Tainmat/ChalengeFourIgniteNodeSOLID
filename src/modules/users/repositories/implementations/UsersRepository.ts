@@ -23,10 +23,11 @@ class UsersRepository implements IUsersRepository {
 
     Object.assign(user, {
       name,
-      admin: false,
       email,
       created_at: new Date(),
     });
+
+    console.log(user.id)
 
     this.users.push(user)
 
@@ -42,7 +43,7 @@ class UsersRepository implements IUsersRepository {
   }
 
   turnAdmin(receivedUser: User): User {
-    const {id} = receivedUser
+    const id = receivedUser.id
 
     this.users.forEach((user) => {
       if(user.id === id){
