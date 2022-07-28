@@ -1,0 +1,11 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CORE USERS API",
+        "description": "Api for users registration and management",
+        "contact": {
+            "email": "taina.pino@gmail.com"
+        },
+        "version": "1.0.0"
+    }
+}

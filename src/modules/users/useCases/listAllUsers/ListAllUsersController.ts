@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+import swaggerUi from 'swagger-ui-express'
 import { ListAllUsersUseCase } from "./ListAllUsersUseCase";
 
 class ListAllUsersController {
