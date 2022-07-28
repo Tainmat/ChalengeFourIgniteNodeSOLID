@@ -18,6 +18,7 @@ class ListAllUsersUseCase {
     }
 
     const users = this.usersRepository.list()
+    
     return users
   }
 }
