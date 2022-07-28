@@ -2,10 +2,188 @@
     "openapi": "3.0.0",
     "info": {
         "title": "CORE USERS API",
-        "description": "Api for users registration and management",
+        "description": "API for users registration and management",
         "contact": {
             "email": "taina.pino@gmail.com"
         },
         "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3333",
+            "description": "API teste"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Insert a User",
+                "description": "Insert a new user",
+                "requestBody": {
+                    "required": "true",
+                    "content": {
+                        "aplication/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserAdd"
+                            },
+                            "example": {
+                                "name": "John Doe",
+                                "email": "john@example.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "aplication/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                },
+                                "example": {
+                                    "id": "44ac9ebd-5555-4775-92fd-9a501cb7b22f",
+                                    "admin": false,
+                                    "created_at": "2022-07-28T10:01:11.295Z",
+                                    "name": "John Doe",
+                                    "email": "john@example.com",
+                                    "updated_at": "2022-07-28T10:01:26.439Z"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "This email already be used",
+                        "content": {
+                            "aplication/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "E-mail john@example.com already exists"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Users"],
+                "summary": "List all users",
+                "description": "Only `admin` users can accesses",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "items": {
+                                "type": "$uuid"
+                            }
+                        },
+                        "style": "form",
+                        "explode": "true"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "aplication/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                },
+                                "example": [
+                                    {
+                                        "id": "44ac9ebd-5555-4775-92fd-9a501cb7b22f",
+                                        "admin": true,
+                                        "created_at": "2022-07-28T10:01:11.295Z",
+                                        "name": "John Doe",
+                                        "email": "john@example.com",
+                                        "updated_at": "2022-07-28T10:01:26.439Z"
+                                    },
+                                    {
+                                        "id": "44ac9ebd-5555-4775-92fd-9a752cb7ba542",
+                                        "admin": false,
+                                        "created_at": "2022-07-28T10:01:11.295Z",
+                                        "name": "John Doe2",
+                                        "email": "john2@example.com",
+                                        "updated_at": "2022-07-28T10:01:26.439Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request not processed",
+                        "content": {
+                            "aplication/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "error": "Access denied! You need to be an administrator."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "admin": {
+                        "type": "boolean",
+                        "enun": ["false", "true"]
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserAdd": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
     }
 }
